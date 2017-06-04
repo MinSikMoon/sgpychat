@@ -26,8 +26,11 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
-
+	
+	<!-- 컨텍스트 로더 리스너 장착 -->
+	<listener>
+	    <listener-class>listener.AppServletContextListener</listener-class>
+	</listener>
 
 	<display-name>Archetype Created Web Application</display-name>
 </web-app>
