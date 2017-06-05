@@ -12,6 +12,10 @@ public class Dialogues {
 	public Dialogues(){
 		dialogues = new LinkedList<String>();
 	}
+	public Dialogues(String greetingMessage){
+		this();
+		dialogues.add(greetingMessage);
+	}
 	
 	//대화 add
 	public void add(String newDialogue){

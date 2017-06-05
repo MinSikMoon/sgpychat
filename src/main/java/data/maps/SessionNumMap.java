@@ -2,6 +2,7 @@ package data.maps;
 
 import java.util.HashMap;
 
+//<roomKey, int>
 public class SessionNumMap {
 	//properties
 	HashMap<String, Integer> map = null;

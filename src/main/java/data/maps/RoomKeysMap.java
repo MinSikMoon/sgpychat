@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import data.models.RoomKeys;
 
+//<sessionId, roomKey>
 public class RoomKeysMap {
 	//properties
 	HashMap<String, RoomKeys> map = null;
@@ -38,6 +39,11 @@ public class RoomKeysMap {
 	public int getRoomKeyCnt(String jid){
 		RoomKeys tempRk = map.get(jid);
 		return tempRk.getCnt();
+	}
+	
+	//method 4 : 현재 참여중인 session수를 알아낸다.
+	public int getSessionNum(){
+		return map.size();
 	}
 
 

@@ -17,6 +17,7 @@
 				classpath:spring-mvc.xml
 				classpath:spring-controller.xml
 				classpath:spring-maps.xml
+				classpath:spring-listeners.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
@@ -27,11 +28,15 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 컨텍스트 로더 리스너 장착 -->
+	<!-- Listeners -->
+	<!-- ContextLoaderListener : 초기화리스너 : 서블릿 컨텍스트 넣어주기 -->
 	<listener>
 	    <listener-class>listener.AppServletContextListener</listener-class>
 	</listener>
-
+	<!-- 세션 리스너 : 세션 감지 -->
+	<listener>
+	     <listener-class>listener.SessionListener</listener-class>
+	</listener>
 	<display-name>Archetype Created Web Application</display-name>
 </web-app>
 
