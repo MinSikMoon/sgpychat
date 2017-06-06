@@ -34,6 +34,10 @@ public class DataMapContainer {
 		sessionNumMap.addNewRoom(roomKey);
 		roomKeysMap.addNewRoomKey(hostJid, roomKey);
 	}
+	//method2 : roomKey가 존재하는지 살펴본다. 
+	public boolean isRoomExist(String roomKey){
+		return dialoguesMap.isExist(roomKey);
+	}
 	//methods
 	//정리 : 
 	//1. make 리퀘스트가 들어오면 먼저 리퀘스트에서 jid를 꺼낸다. : 일단 방을 만들어야 함.
@@ -45,9 +49,7 @@ public class DataMapContainer {
 	
 	
 	//1. Dialogues 대화 관련
-	public boolean isRoomExist(String roomKey){
-		return dialoguesMap.isExist(roomKey);
-	}
+	
 	public boolean addRoom(String roomKey){
 		return dialoguesMap.makeNewRoom(roomKey);
 	}

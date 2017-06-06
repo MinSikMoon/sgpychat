@@ -25,16 +25,19 @@ public class RoomController implements ServletContextAware{
 	//방생성 매핑 : chat master 전용
 	@RequestMapping("/make")
 	public String makeRoom(HttpServletRequest request){
-		//1. 6자리 key 생성 & sessionJid 얻어오기
-		String tempRoomKey = RoomKeyMaker.makeRoomKey();
+		//1.sessionJid & dmc 얻어오기
 		String tempJid = request.getSession().getId();
-		//2. dmc에서 새로운 방 생성한다. 
 		DataMapContainer dmc = (DataMapContainer)sc.getAttribute("dmc");
+		//2. 존재하지 않는 roomKey를 만든다.
+		String tempRoomKey = RoomKeyMaker.makeRoomKey();
+		while(dmc.isRoomExist(tempRoomKey))
+			tempRoomKey = RoomKeyMaker.makeRoomKey();
+		//3. dmc에서 새로운 방 생성한다. 
 		dmc.makeNewRoom(tempRoomKey, tempJid);
 		System.out.println(dmc);
+		
+		
 		return "redirect:"+tempRoomKey;
-		
-		
 	}
 	
 	//방참여 매핑 : chat guest 전용
