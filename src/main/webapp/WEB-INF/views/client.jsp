@@ -44,6 +44,14 @@
 				g_result = OUTPUT_INIT;
 			}
 		});
+		
+		//탭닫기 & 브라우저 닫기 시 로그아웃 테스트
+		$(window).on("beforeunload", function(){
+			var roomKey = $("#roomKey").val();
+			$.get("exit/"+roomKey,{}, function(data){
+				alert("close 보내기 성공");
+			});
+		})
 	})
 </script>
 <!-- style -->
@@ -142,7 +150,7 @@ html, body, .container {
 <body>
 	<div class="form-group top-bar">
 		<span class="nav-div"> <span class="vmiddle white-text">ROOM
-				KEY : </span> <textarea class="vmiddle" readonly rows="1" cols="6">${roomKey}</textarea>
+				KEY : </span> <textarea id="roomKey" class="vmiddle" readonly rows="1" cols="6">${roomKey}</textarea>
 		</span> <span class="nav-div"> <span class="vmiddle white-text">이름
 				: </span> <textarea class="vmiddle" rows="1" cols="15" placeholder="이름입력"></textarea>
 		</span>
@@ -154,7 +162,6 @@ html, body, .container {
 		<div class="row">
 			<div class="col-lg-6 col-md-6 chat-basic chat-python">
 				<h3 class="group-title">파이썬 화면</h3>
-
 				<form action="">
 					<div class="input-group">
 						<textarea id="python-source" class="form-control" rows="12"
@@ -168,17 +175,13 @@ html, body, .container {
 							<span class="glyphicon glyphicon-send"></span> 소스코드 제출
 						</button>
 					</div>
-
 					<div class="input-group">
 						<textarea readonly id="python-output" class="form-control"
 							rows="12" placeholder="결과화면입니다."></textarea>
 					</div>
-
 				</form>
-
-
-
 			</div>
+
 			<div class="col-lg-6 col-md-6 chat-basic chat">
 				<h3 class="group-title">채팅 화면</h3>
 				<form>
@@ -197,9 +200,6 @@ html, body, .container {
 							</button>
 						</div>
 					</div>
-
-
-
 				</form>
 			</div>
 		</div>

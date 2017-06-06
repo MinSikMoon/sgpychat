@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 
 import data.container.DataMapContainer;
@@ -45,5 +46,15 @@ public class RoomController implements ServletContextAware{
 	public String joinRoom(@PathVariable String roomKey){
 		System.out.println(roomKey);
 		return "client";
+	}
+	
+	//방나가기 매핑 : 
+	@RequestMapping("/exit/{roomKey}")
+	@ResponseBody
+	public String exitRoom(HttpServletRequest request, @PathVariable String roomKey){
+		String tempJid = request.getSession().getId();
+		System.out.println(tempJid + "가 "+roomKey+ "를 나갑니다.");
+		request.getSession().invalidate();
+		return "";
 	}
 }
