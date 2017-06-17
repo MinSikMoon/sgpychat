@@ -18,6 +18,7 @@
 				classpath:spring-controller.xml
 				classpath:spring-maps.xml
 				classpath:spring-listeners.xml
+				classpath:spring-web-socket.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
@@ -27,7 +28,6 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
 	<!-- Listeners -->
 	<!-- ContextLoaderListener : 초기화리스너 : 서블릿 컨텍스트 넣어주기 -->
 	<listener>

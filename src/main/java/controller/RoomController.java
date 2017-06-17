@@ -23,6 +23,16 @@ public class RoomController implements ServletContextAware{
 	public void setServletContext(ServletContext sc){
 		this.sc = sc;
 	}
+	//webSocket make용
+	@RequestMapping("/makeWs")
+	public String makeWsRoom(){
+		String tempRoomKey = RoomKeyMaker.makeRoomKey();
+		return "redirect:ws/"+tempRoomKey; 
+	}
+	@RequestMapping("/ws/{roomKey}")
+	public String wsClient(@PathVariable String roomKey){
+		return "wsclient";
+	}
 	//방생성 매핑 : chat master 전용
 	@RequestMapping("/make")
 	public String makeRoom(HttpServletRequest request){
@@ -54,7 +64,9 @@ public class RoomController implements ServletContextAware{
 	public String exitRoom(HttpServletRequest request, @PathVariable String roomKey){
 		String tempJid = request.getSession().getId();
 		System.out.println(tempJid + "가 "+roomKey+ "를 나갑니다.");
-		request.getSession().invalidate();
+		//request.getSession().invalidate();
 		return "";
 	}
+	
+	
 }
