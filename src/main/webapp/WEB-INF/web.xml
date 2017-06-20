@@ -33,10 +33,10 @@
 	<listener>
 	    <listener-class>listener.AppServletContextListener</listener-class>
 	</listener>
-	<!-- 세션 리스너 : 세션 감지 -->
-	<listener>
+	<!-- 세션 리스너 : 세션 감지 : 필요없어짐 -->
+	<!-- <listener>
 	     <listener-class>listener.SessionListener</listener-class>
-	</listener>
+	</listener> -->
 	<display-name>Archetype Created Web Application</display-name>
 </web-app>
 

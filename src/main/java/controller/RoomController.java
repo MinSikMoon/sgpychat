@@ -67,14 +67,14 @@ public class RoomController implements ServletContextAware{
 	}
 
 	//방나가기 매핑 : 
-	@RequestMapping("/exit/{roomKey}")
+	/*@RequestMapping("/exit/{roomKey}")
 	@ResponseBody
 	public String exitRoom(HttpServletRequest request, @PathVariable String roomKey){
 		String tempJid = request.getSession().getId();
 		System.out.println(tempJid + "가 "+roomKey+ "를 나갑니다.");
 		//request.getSession().invalidate();
 		return "";
-	}
+	}*/
 
 
 }

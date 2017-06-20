@@ -7,6 +7,6 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-	<bean class="data.maps.DialoguesMap"/>
+	<bean id="wsHostMap" class="data.maps.WsHostMap"/>
 
 </beans>
