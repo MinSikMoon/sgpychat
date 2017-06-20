@@ -38,6 +38,17 @@ public class DataMapContainer {
 	public boolean isRoomExist(String roomKey){
 		return dialoguesMap.isExist(roomKey);
 	}
+	//method3 : host의 jid를 얻어낸다.
+	public String getHost(String roomKey){
+		return hostMap.getRoomHost(roomKey);
+	}
+	//method4 : host인지 알아내는 함수
+	public boolean isHost(String roomKey, String jid){
+		if(jid.equals(hostMap.getRoomHost(roomKey)))
+			return true;
+		else
+			return false;
+	}
 	//methods
 	//정리 : 
 	//1. make 리퀘스트가 들어오면 먼저 리퀘스트에서 jid를 꺼낸다. : 일단 방을 만들어야 함.

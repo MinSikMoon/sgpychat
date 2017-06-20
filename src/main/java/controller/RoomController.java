@@ -23,16 +23,13 @@ public class RoomController implements ServletContextAware{
 	public void setServletContext(ServletContext sc){
 		this.sc = sc;
 	}
-	//webSocket make용
-	@RequestMapping("/makeWs")
-	public String makeWsRoom(){
-		String tempRoomKey = RoomKeyMaker.makeRoomKey();
-		return "redirect:ws/"+tempRoomKey; 
+	//웹소켓 테스트
+	@RequestMapping("/wstest")
+	public String wsTest(){
+		return "wsclient_test";
 	}
-	@RequestMapping("/ws/{roomKey}")
-	public String wsClient(@PathVariable String roomKey){
-		return "wsclient";
-	}
+	
+
 	//방생성 매핑 : chat master 전용
 	@RequestMapping("/make")
 	public String makeRoom(HttpServletRequest request){
@@ -46,18 +43,29 @@ public class RoomController implements ServletContextAware{
 		//3. dmc에서 새로운 방 생성한다. 
 		dmc.makeNewRoom(tempRoomKey, tempJid);
 		System.out.println(dmc);
-		
-		
+
+
 		return "redirect:"+tempRoomKey;
 	}
-	
-	//방참여 매핑 : chat guest 전용
+
+	//방참여 매핑 : chat guest 전용 //host와 client 분기시켜야 한다. 
 	@RequestMapping("/{roomKey}")
-	public String joinRoom(@PathVariable String roomKey){
+	public String joinRoom(HttpServletRequest request, @PathVariable String roomKey){
+		//1.sessionJid & dmc 얻어오기
+		String tempJid = request.getSession().getId();
+		DataMapContainer dmc = (DataMapContainer)sc.getAttribute("dmc");
+		String viewUrl = null;
+		
+		//2. host와 client분기
+		if(dmc.isHost(roomKey, tempJid))
+			viewUrl = "wshost";
+		else
+			viewUrl = "wsclient";
+		
 		System.out.println(roomKey);
-		return "client";
+		return viewUrl;
 	}
-	
+
 	//방나가기 매핑 : 
 	@RequestMapping("/exit/{roomKey}")
 	@ResponseBody
@@ -67,6 +75,6 @@ public class RoomController implements ServletContextAware{
 		//request.getSession().invalidate();
 		return "";
 	}
-	
-	
+
+
 }
