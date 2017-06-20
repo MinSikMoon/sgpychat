@@ -12,15 +12,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	private WsHostMap map = null;
 	
 	public void setWsHostMap(WsHostMap map){
-		System.out.println("ws 장착~~~~~");
+		System.out.println("hander에서 ws장착");
 		this.map = map;
 	}
 	//1. connection established
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception{
 		System.out.println(session.getRemoteAddress().getHostName() + "웹소켓 연결됨");
-		if(map == null)
-			System.out.println("map이 널이다.");
 	}
 	//2. text message
 	@Override

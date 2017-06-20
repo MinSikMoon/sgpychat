@@ -43,5 +43,8 @@ public class WsHostMap {
 		return resultSession;
 	}
 	
+	public boolean isRoomExist(String roomKey){
+		return hostMap.containsKey(roomKey);
+	}
 	
 }

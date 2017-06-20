@@ -18,10 +18,6 @@ public class AppServletContextListener implements ServletContextListener {
 		ServletContext sc = event.getServletContext();
 		DataMapContainer dmc = new DataMapContainer();
 		sc.setAttribute("dmc", dmc);
-		/*//servlet context에 데이터 맵을 넣는다. 
-		HashMap<String, String> testMap = new HashMap<String, String>();
-		//sc에 저장
-		sc.setAttribute("testMap", testMap);*/
 		System.out.println("서블릿 컨텍스트 장착완료~~");
 	}
 

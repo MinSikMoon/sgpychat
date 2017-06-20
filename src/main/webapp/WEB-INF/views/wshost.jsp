@@ -58,47 +58,55 @@
 			//누를 때마다 버튼이 한개씩 추가
 			$("#chat-list").append($(".src-btn"));
 		})
+		
+		/* 웹소켓 관련 */
+		var webSocket = new WebSocket("ws://localhost:8080/sgpychat/testing/ws");
+		var date = new Date();
+		var time = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
+		//웹 소켓이 연결되었을 때 호출되는 이벤트
+		webSocket.onopen = function(message) {
+			//생성과 동시에 roomKey관련 메시지를 보낸다.
+			var msg = {
+				type : "make",
+				roomKey : $("#roomKey").val(),
+			};
+			webSocket.send(JSON.stringify(msg));
+		};
+		//웹 소켓이 닫혔을 때 호출되는 이벤트
+		webSocket.onclose = function(message) {
+			$("#received-content").val("Server Disconnect...\n");
+		};
+		//웹 소켓이 에러가 났을 때 호출되는 이벤트
+		webSocket.onerror = function(message) {
+			$("#received-content").val("error...\n")
+		};
+		//웹 소켓에서 메시지가 날라왔을 때 호출되는 이벤트
+		webSocket.onmessage = function(message) {
+			$("#received-content").val(
+					"Recieve From Server => " + message.data + "\n");
+		};
+		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
+
+		$("#chat-send").click(function() {
+			var msg = {
+				type : "message",
+				text : $("#send-content").val(),
+				roomKey : $("#roomKey").val(),
+				date : Date.now()
+			};
+			//웹소켓으로 textMessage객체의 값을 보낸다.
+			webSocket.send(JSON.stringify(msg));
+			//textMessage객체의 값 초기화
+			$("#send-content").val('');
+		})
+		//웹소켓 종료
+		function disconnect() {
+			webSocket.close();
+		}
 	})
 </script>
-<!-- 웹소켓 전용  -->
-<script type="text/javascript">
-	//WebSocketEx는 프로젝트 이름
-	//websocket 클래스 이름
-	var wsUrl = "ws://localhost:9090/sgpychat/ws";
-	var roomKey = $("#roomKey").val();
-	var webSocket = new WebSocket("ws://localhost:8080/sgpychat/testing/ws");
-	var messageTextArea = document.getElementById("messageTextArea");
-	//웹 소켓이 연결되었을 때 호출되는 이벤트
-	webSocket.onopen = function(message) {
-		messageTextArea.value += "Server connect...\n";
-	};
-	//웹 소켓이 닫혔을 때 호출되는 이벤트
-	webSocket.onclose = function(message) {
-		messageTextArea.value += "Server Disconnect...\n";
-	};
-	//웹 소켓이 에러가 났을 때 호출되는 이벤트
-	webSocket.onerror = function(message) {
-		messageTextArea.value += "error...\n";
-	};
-	//웹 소켓에서 메시지가 날라왔을 때 호출되는 이벤트
-	webSocket.onmessage = function(message) {
-		messageTextArea.value += "Recieve From Server => " + message.data
-				+ "\n";
-	};
-	//Send 버튼을 누르면 실행되는 함수
-	function sendMessage() {
-		var message = document.getElementById("textMessage");
-		messageTextArea.value += "Send to Server => " + message.value + "\n";
-		//웹소켓으로 textMessage객체의 값을 보낸다.
-		webSocket.send(message.value);
-		//textMessage객체의 값 초기화
-		message.value = "";
-	}
-	//웹소켓 종료
-	function disconnect() {
-		webSocket.close();
-	}
-</script>
+
+
 <!-- style -->
 <style>
 html, body, .container {
@@ -244,7 +252,7 @@ html, body, .container {
 <body>
 	<div class="form-group top-bar">
 		<span class="nav-div"> <span class="vmiddle white-text">ROOM
-				KEY : </span> <textarea class="vmiddle" readonly rows="1" cols="6">${roomKey}</textarea>
+				KEY : </span> <textarea id="roomKey" class="vmiddle" readonly rows="1" cols="6">${roomKey}</textarea>
 		</span> <span class="nav-div"> <span class="vmiddle white-text">교수자용
 				화면 </span></span>
 	</div>

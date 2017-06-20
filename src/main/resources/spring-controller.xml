@@ -10,7 +10,9 @@
 
 	<mvc:view-controller path="/main" view-name="main"/>
 	
-	<bean class="controller.RoomController"/>
+	<bean class="controller.RoomController">
+	    <property name="wsHostMap" ref="wsHostMap"></property>
+	</bean>
 	
 	
 </beans>
