@@ -56,7 +56,9 @@
 		//엘리먼트 생성 테스트
 		$("#test-btn").click(function() {
 			//누를 때마다 버튼이 한개씩 추가
-			$("#chat-list").append($(".src-btn"));
+			//$("#chat-list").append($(".src-btn"));
+			//$("#chat-list").append($("#test-input").val());
+			$("#chat-list").append($(this).attr("value"));
 		})
 		
 		/* 웹소켓 관련 */
@@ -89,9 +91,8 @@
 
 		$("#chat-send").click(function() {
 			var msg = {
-				type : "message",
-				text : $("#send-content").val(),
-				roomKey : $("#roomKey").val(),
+				type : "host",
+				content : $("#send-content").val(),
 				date : Date.now()
 			};
 			//웹소켓으로 textMessage객체의 값을 보낸다.
@@ -264,10 +265,11 @@ html, body, .container {
 				class="host-chat-list well well-lg col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
 				<div class="panel-group">
 					<div class="panel panel-default">
-						<button class="btn btn-lg" id="test-btn">테스트입니다.</button>
+						<button class="btn btn-lg" id="test-btn" value="wowowow  hahahaha">테스트입니다.</button>
 						<div class="panel-body right-text-align">
 							소스 <span class="badge">1</span> 채팅 <span class="badge">2</span>
 						</div>
+						
 					</div>
 				</div>
 				<button type="button" id="pysrc-btn"

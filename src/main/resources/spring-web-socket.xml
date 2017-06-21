@@ -10,8 +10,10 @@
 		http://www.springframework.org/schema/websocket
         http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 	
+	<bean id="jsonParser" class="org.json.simple.parser.JSONParser"></bean>
 	<bean id="echoHandler" class="websocket.WebSocketHandler">
 	    <property name="wsHostMap" ref="wsHostMap"></property>
+	    <property name="jSONParser" ref="jsonParser"></property>
 	</bean>
 	
 	<websocket:handlers>

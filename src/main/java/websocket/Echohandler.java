@@ -18,7 +18,6 @@ public class Echohandler extends TextWebSocketHandler {
 	// 웹소켓 서버에 클라이언트가 접속하면 호출되는 메소드
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-
 		super.afterConnectionEstablished(session);
 		System.out.println("클라이언트 접속됨");
 	}
