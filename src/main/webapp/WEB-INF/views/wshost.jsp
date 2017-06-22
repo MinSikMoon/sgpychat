@@ -84,8 +84,7 @@
 		};
 		//웹 소켓에서 메시지가 날라왔을 때 호출되는 이벤트
 		webSocket.onmessage = function(message) {
-			$("#received-content").val(
-					"Recieve From Server => " + message.data + "\n");
+			$("#chat-list").append(message.data);
 		};
 		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
 
@@ -94,6 +93,8 @@
 				type : "host",
 				content : $("#send-content").val(),
 				date : Date.now()
+				//client id도 생성해야함.
+				//client에서 보내면 host에 뜨는 것 해보자.
 			};
 			//웹소켓으로 textMessage객체의 값을 보낸다.
 			webSocket.send(JSON.stringify(msg));

@@ -17,6 +17,7 @@
 <script type="text/javascript" src="js/brython_stdlib.js"></script>
 <script type="text/javascript">
 	$(function() {
+		
 		//VARIABLES : 변수들
 		var OUTPUT_INIT = ''
 		var logBackUp = console.log;
@@ -75,11 +76,14 @@
 		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
 
 		$("#chat-send").click(function() {
+			//시간 객체
+			var date = new Date();
+			var time = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
 			var msg = {
-				type : "message",
-				text : $("#send-content").val(),
+				type : "client",
+				content : $("#send-content").val(),
 				roomKey : $("#roomKey").val(),
-				date : Date.now()
+				date : time
 			};
 			//웹소켓으로 textMessage객체의 값을 보낸다.
 			webSocket.send(JSON.stringify(msg));

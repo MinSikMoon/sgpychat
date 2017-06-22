@@ -42,9 +42,17 @@ public class WsHostMap {
 			resultSession = sessionMap.get(id);
 		return resultSession;
 	}
+	public String getHostId(String roomKey){
+		return hostMap.get(roomKey);
+	}
 	
 	public boolean isRoomExist(String roomKey){
 		return hostMap.containsKey(roomKey);
+	}
+	
+	public void removeSession(String id){
+		if(sessionMap.containsKey(id))
+			sessionMap.remove(id);
 	}
 	
 }

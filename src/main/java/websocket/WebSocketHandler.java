@@ -35,6 +35,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception{
 		System.out.println(session.getRemoteAddress().getHostName() + "웹소켓 연결됨");
+		map.setSession(session.getId(), session);
+		if(map.getSession(session.getId()) == null)
+			System.out.println("destsession이 ㄴㄹ이다.");
 	}
 	//2. text message
 	@Override
@@ -42,21 +45,40 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		String sessionId = session.getId();
 		String jsonMsg = message.getPayload();
 		String roomKey = getMessage(jsonMsg, "roomKey");
+		String msgType = getMessage(jsonMsg, "type");
 		//type이 make인지 message인지 부터 파악
-		if(getMessage(jsonMsg, "type").equals("make")){
+		if(msgType.equals("make")){
 			map.setRoomHost(roomKey, sessionId);
+			
+			System.out.println(roomKey + "에 " + sessionId +"가 방을 열었다.");
 		}else{
-			//메시지라면 host에서 온건지 client에서 온건지 파악한다.
+			String content = getMessage(jsonMsg, "content");
+			String timeStamp = getMessage(jsonMsg, "date");
+			JSONObject obj = new JSONObject();
+			WebSocketSession destSession = null;
+			if(msgType.equals("client")){
+				destSession = map.getSession(map.getHostId(roomKey));
+				/*if(map.getSession(map.getHostId(roomKey)) == null)
+					System.out.println("destsession이 ㄴㄹ이다.");*/
+				//
+				System.out.println(roomKey + "의 방장은 " + map.getHostId(roomKey));
+				obj.put("clientId", sessionId);
+				obj.put("content", content);
+				obj.put("date", timeStamp);
+				
+			}else{
+				
+			}
+			destSession.sendMessage(new TextMessage(obj.toJSONString()));
 			
 		}
-		
-		
-		
 	}
+	
 	//3. connection closed
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception{
 		System.out.println(session.getId() + " 연결 종료~");
+		map.removeSession(session.getId());
 	}
 
 
