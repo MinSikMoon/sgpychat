@@ -70,7 +70,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				obj.put("date", timeStamp);
 				obj.put("contentType", contentType);
 				obj.put("name", name);
-				System.out.println(jsonMsg);
+				//System.out.println(jsonMsg);
 			}else{
 				
 			}

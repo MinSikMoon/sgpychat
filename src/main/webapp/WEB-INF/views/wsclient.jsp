@@ -57,12 +57,12 @@
 		var webSocket = new WebSocket("ws://localhost:8080/sgpychat/testing/ws");
 		//웹 소켓이 연결되었을 때 호출되는 이벤트
 		webSocket.onopen = function(message) {
-			$("#received-content").val(message);
+			$("#received-content").val("교수님과 연결되었습니다.");
 		};
 		//웹 소켓이 닫혔을 때 호출되는 이벤트
 		webSocket.onclose = function(message) {
-			$("#received-content").val("Server Disconnect...\n");
-			;
+			var tempContent = $("#received-content").val() + "\n ==>교수님과 연결이 끊어졌습니다=="
+			$("#received-content").val(tempContent);
 		};
 		//웹 소켓이 에러가 났을 때 호출되는 이벤트
 		webSocket.onerror = function(message) {
@@ -70,24 +70,30 @@
 		};
 		//웹 소켓에서 메시지가 날라왔을 때 호출되는 이벤트
 		webSocket.onmessage = function(message) {
-			$("#received-content").val(
-					"Recieve From Server => " + message.data + "\n");
+			$("#received-content").append(
+					"교수님 => "+message+"<br>"		
+				);
 		};
 		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
 		$("#chat-send").click(function() {
 			//시간 객체
 			var date = new Date();
 			var time = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
+			var sendContent = $("#send-content").val();
 			var msg = {
 				type : "client",
 				name: $("#name").val(),
-				content : $("#send-content").val(),
+				content: sendContent,
 				content_type: "chat",
 				roomKey : $("#roomKey").val(),
 				date : time
 			};
 			//웹소켓으로 textMessage객체의 값을 보낸다.
 			webSocket.send(JSON.stringify(msg));
+			//내 화면에도 추가
+			var tempContent = $("#received-content").val() + "\n*나 => "
+			+ sendContent + "\n" + time + "==========\n";
+			$("#received-content").val(tempContent);
 			//textMessage객체의 값 초기화
 			$("#send-content").val('');
 		})

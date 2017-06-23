@@ -21,6 +21,7 @@
 		var OUTPUT_INIT = ''
 		var logBackUp = console.log;
 		var g_result = OUTPUT_INIT;
+		var PK = 0;
 		//console overriding : 콘솔 명령어 재정의/ 화면에 보이도록 후킹
 		console.log = function(s) {
 			if (typeof (s) == 'string') {
@@ -84,17 +85,20 @@
 			var obj = JSON.parse(message.data);
 			var contentType = obj.contentType;
 			var addingElem = null;
-			
+			var chatElemPk = "chatElem"+(PK++);
 			 if(contentType == "chat"){
 				addingElem = $("<button class='btn list-elem btn-warning btn-lg btn-block overflow-hidden chat-btn' data-toggle='modal' data-target='#chatModal'></button>")
-				.append("<span class='label label-danger cnt-badge'>"+$('.list-elem').length+"</span>")
+				.append("<span class='label label-danger cnt-badge'></span>")
 				.append("<span class='label label-success name-badge'>"+obj.name+"</span>")
-				.append("<input class='client-id' type='hidden'>"+obj.clientId+"</input>")
 				.append(obj.content);
 				addingElem.on('click', function(){
 					$('#chat-modal-name').text(obj.name);
 					$('#chat-modal-content').text(obj.content);
+					$('#client-id').text(obj.clientId);
+					$('#chat-remove-btn').attr("target-pk",chatElemPk);
 				});
+				addingElem.attr('id',chatElemPk);
+				
 								
 			}else{
 				addingElem = $("<button class='btn list-elem btn-primary btn-lg btn-block overflow-hidden src-btn' data-toggle='modal' data-target='#srcModal'>"+obj.content+"</button>")
@@ -102,12 +106,20 @@
 				.append("<span class='label label-success name-badge'>"+obj.name+"</span>");
 			}
 			$("#chat-list").append(addingElem); 
+			idxReset();
 			//$("#chat-list").append("<button class=\"btn btn-primary btn-lg btn-block overflow-hidden src-btn\">"+obj.content+"</button>");
 		};
 		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
 		/* $(".chat-btn").click(function(){
 			$('#chat-modal-content').text($(this).find('.name-badge').text());
 		}) */
+		
+		//인덱스 리셋 함수
+		idxReset = function(){
+			$('.cnt-badge').each(function(index){
+				$(this).text(index);
+			});
+		}
 		
 		$("#chat-send").click(function() {
 			var msg = {
@@ -119,6 +131,11 @@
 			webSocket.send(JSON.stringify(msg));
 			//textMessage객체의 값 초기화
 			$("#send-content").val('');
+		})
+		$("#chat-remove-btn").click(function() {
+			var targetId ="#"+$(this).attr("target-pk");
+			$(targetId).remove();
+			idxReset();
 		})
 		//웹소켓 종료
 		function disconnect() {
@@ -361,6 +378,8 @@ html, body, .container {
 
 
 						<div class="chat-input-group">
+							<input id="client-id" type="hidden"></input>
+							<input id="elem-pk" type="hidden"></input>
 							<textarea id="response-msg" class="form-control" rows="4"
 								placeholder="입력하세요."></textarea>
 						</div>
@@ -372,7 +391,9 @@ html, body, .container {
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer"></div>
+				<div class="modal-footer">
+					<button id="chat-remove-btn" type="button" class="btn btn-danger python-btn" target-pk="" data-dismiss="modal">삭제</button>
+				</div>
 			</div>
 
 		</div>
