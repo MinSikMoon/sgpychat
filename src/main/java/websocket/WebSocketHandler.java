@@ -54,7 +54,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		}else{
 			String content = getMessage(jsonMsg, "content");
 			String timeStamp = getMessage(jsonMsg, "date");
+			String contentType = getMessage(jsonMsg, "content_type");
+			String name = getMessage(jsonMsg, "name");
 			JSONObject obj = new JSONObject();
+			
 			WebSocketSession destSession = null;
 			if(msgType.equals("client")){
 				destSession = map.getSession(map.getHostId(roomKey));
@@ -65,7 +68,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				obj.put("clientId", sessionId);
 				obj.put("content", content);
 				obj.put("date", timeStamp);
-				
+				obj.put("contentType", contentType);
+				obj.put("name", name);
+				System.out.println(jsonMsg);
 			}else{
 				
 			}

@@ -74,14 +74,33 @@
 					"Recieve From Server => " + message.data + "\n");
 		};
 		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
-
 		$("#chat-send").click(function() {
 			//시간 객체
 			var date = new Date();
 			var time = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
 			var msg = {
 				type : "client",
+				name: $("#name").val(),
 				content : $("#send-content").val(),
+				content_type: "chat",
+				roomKey : $("#roomKey").val(),
+				date : time
+			};
+			//웹소켓으로 textMessage객체의 값을 보낸다.
+			webSocket.send(JSON.stringify(msg));
+			//textMessage객체의 값 초기화
+			$("#send-content").val('');
+		})
+		//소스코드 제출 누르면 실행되는 함수.
+		$("#src-send").click(function() {
+			//시간 객체
+			var date = new Date();
+			var time = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
+			var msg = {
+				type : "client",
+				name: $("#name").val(),
+				content : $("#python-source").val(),
+				content_type: "source",
 				roomKey : $("#roomKey").val(),
 				date : time
 			};
@@ -199,7 +218,7 @@ html, body, .container {
 				KEY : </span> <textarea id="roomKey" class="vmiddle" readonly rows="1"
 				cols="6">${roomKey}</textarea>
 		</span> <span class="nav-div"> <span class="vmiddle white-text">이름
-				: </span> <textarea class="vmiddle" rows="1" cols="15" placeholder="이름입력"></textarea>
+				: </span> <textarea id="name" class="vmiddle" rows="1" cols="15" placeholder="이름입력"></textarea>
 		</span>
 	</div>
 	<div class="container-fluid">

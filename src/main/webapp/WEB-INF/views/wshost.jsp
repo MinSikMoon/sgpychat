@@ -55,9 +55,6 @@
 
 		//엘리먼트 생성 테스트
 		$("#test-btn").click(function() {
-			//누를 때마다 버튼이 한개씩 추가
-			//$("#chat-list").append($(".src-btn"));
-			//$("#chat-list").append($("#test-input").val());
 			$("#chat-list").append($(this).attr("value"));
 		})
 		
@@ -84,17 +81,39 @@
 		};
 		//웹 소켓에서 메시지가 날라왔을 때 호출되는 이벤트
 		webSocket.onmessage = function(message) {
-			$("#chat-list").append(message.data);
+			var obj = JSON.parse(message.data);
+			var contentType = obj.contentType;
+			var addingElem = null;
+			
+			 if(contentType == "chat"){
+				addingElem = $("<button class='btn list-elem btn-warning btn-lg btn-block overflow-hidden chat-btn' data-toggle='modal' data-target='#chatModal'></button>")
+				.append("<span class='label label-danger cnt-badge'>"+$('.list-elem').length+"</span>")
+				.append("<span class='label label-success name-badge'>"+obj.name+"</span>")
+				.append("<input class='client-id' type='hidden'>"+obj.clientId+"</input>")
+				.append(obj.content);
+				addingElem.on('click', function(){
+					$('#chat-modal-name').text(obj.name);
+					$('#chat-modal-content').text(obj.content);
+				});
+								
+			}else{
+				addingElem = $("<button class='btn list-elem btn-primary btn-lg btn-block overflow-hidden src-btn' data-toggle='modal' data-target='#srcModal'>"+obj.content+"</button>")
+				.append("<span class='label label-danger cnt-badge'>"+$('.list-elem').length+"</span>")
+				.append("<span class='label label-success name-badge'>"+obj.name+"</span>");
+			}
+			$("#chat-list").append(addingElem); 
+			//$("#chat-list").append("<button class=\"btn btn-primary btn-lg btn-block overflow-hidden src-btn\">"+obj.content+"</button>");
 		};
 		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
-
+		/* $(".chat-btn").click(function(){
+			$('#chat-modal-content').text($(this).find('.name-badge').text());
+		}) */
+		
 		$("#chat-send").click(function() {
 			var msg = {
 				type : "host",
 				content : $("#send-content").val(),
 				date : Date.now()
-				//client id도 생성해야함.
-				//client에서 보내면 host에 뜨는 것 해보자.
 			};
 			//웹소켓으로 textMessage객체의 값을 보낸다.
 			webSocket.send(JSON.stringify(msg));
@@ -273,14 +292,14 @@ html, body, .container {
 						
 					</div>
 				</div>
-				<button type="button" id="pysrc-btn"
+				<button type="button"
 					class="btn btn-primary btn-lg btn-block overflow-hidden src-btn"
 					data-toggle="modal" data-target="#srcModal">
 					<span class="label label-danger cnt-badge">1</span> <span
 						class="label label-success name-badge">문민식</span>
 					글내용블라블랑ㄴㄻㄴㅇㄹasdfasdfasdfsadfsadfsadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasfas
 				</button>
-				<button type="button" class="btn btn-warning btn-lg btn-block"
+				<button type="button" class="btn btn-warning btn-lg btn-block chat-btn"
 					data-toggle="modal" data-target="#chatModal">
 					<span class="label label-danger cnt-badge">2</span> <span
 						class="label label-success name-badge">김철수</span>Button 2
@@ -330,13 +349,13 @@ html, body, .container {
 				<div class="modal-header chat-modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
-						채팅내용 from <span class="label label-success">문민식</span>
+						채팅내용 from <span id='chat-modal-name' class="label label-success">문민식</span>
 					</h4>
 				</div>
 				<div class="modal-body">
 					<div class="chat-group">
 						<div class="input-group">
-							<textarea readonly id="" class="form-control" rows="15"
+							<textarea readonly id="chat-modal-content" class="form-control" rows="15"
 								placeholder="채팅 화면입니다."></textarea>
 						</div>
 
