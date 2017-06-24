@@ -86,7 +86,8 @@
 			var contentType = obj.contentType;
 			var addingElem = null;
 			var chatElemPk = "chatElem"+(PK++);
-			 if(contentType == "chat"){
+			
+			if(contentType == "chat"){
 				addingElem = $("<button class='btn list-elem btn-warning btn-lg btn-block overflow-hidden chat-btn' data-toggle='modal' data-target='#chatModal'></button>")
 				.append("<span class='label label-danger cnt-badge'></span>")
 				.append("<span class='label label-success name-badge'>"+obj.name+"</span>")
@@ -97,22 +98,24 @@
 					$('#chat-send').attr("client-id",obj.clientId);
 					$('#chat-remove-btn').attr("target-pk",chatElemPk);
 				});
-				addingElem.attr('id',chatElemPk);
-				
-								
 			}else{
-				addingElem = $("<button class='btn list-elem btn-primary btn-lg btn-block overflow-hidden src-btn' data-toggle='modal' data-target='#srcModal'>"+obj.content+"</button>")
-				.append("<span class='label label-danger cnt-badge'>"+$('.list-elem').length+"</span>")
-				.append("<span class='label label-success name-badge'>"+obj.name+"</span>");
+				addingElem = $("<button class='btn btn-primary btn-lg btn-block overflow-hidden src-btn' data-toggle='modal' data-target='#srcModal'></button>")
+				.append("<span class='label label-danger cnt-badge'></span>")
+				.append("<span class='label label-success name-badge'>"+obj.name+"</span>")
+				.append(obj.content);
+				addingElem.on('click', function(){
+					$('#src-modal-name').text(obj.name);
+					$('#python-source').text(obj.content);
+					$('#src-remove-btn').attr("target-pk",chatElemPk);
+					$('#python-output').text("");
+				});
 			}
+			 addingElem.attr('id',chatElemPk);
 			$("#chat-list").append(addingElem); 
 			idxReset();
 			//$("#chat-list").append("<button class=\"btn btn-primary btn-lg btn-block overflow-hidden src-btn\">"+obj.content+"</button>");
 		};
-		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
-		/* $(".chat-btn").click(function(){
-			$('#chat-modal-content').text($(this).find('.name-badge').text());
-		}) */
+		
 		
 		//인덱스 리셋 함수
 		idxReset = function(){
@@ -138,7 +141,7 @@
 			//textMessage객체의 값 초기화
 			$("#send-content").val('');
 		})
-		$("#chat-remove-btn").click(function() {
+		$("#chat-remove-btn, #src-remove-btn").click(function() {
 			var targetId ="#"+$(this).attr("target-pk");
 			$(targetId).remove();
 			idxReset();
@@ -308,25 +311,12 @@ html, body, .container {
 				class="host-chat-list well well-lg col-sm-8 col-md-8 col-lg-8 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
 				<div class="panel-group">
 					<div class="panel panel-default">
-						<button class="btn btn-lg" id="test-btn" value="wowowow  hahahaha">테스트입니다.</button>
 						<div class="panel-body right-text-align">
 							소스 <span class="badge">1</span> 채팅 <span class="badge">2</span>
 						</div>
 						
 					</div>
 				</div>
-				<button type="button"
-					class="btn btn-primary btn-lg btn-block overflow-hidden src-btn"
-					data-toggle="modal" data-target="#srcModal">
-					<span class="label label-danger cnt-badge">1</span> <span
-						class="label label-success name-badge">문민식</span>
-					글내용블라블랑ㄴㄻㄴㅇㄹasdfasdfasdfsadfsadfsadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdasfas
-				</button>
-				<button type="button" class="btn btn-warning btn-lg btn-block chat-btn"
-					data-toggle="modal" data-target="#chatModal">
-					<span class="label label-danger cnt-badge">2</span> <span
-						class="label label-success name-badge">김철수</span>Button 2
-				</button>
 			</div>
 		</div>
 	</div>
@@ -340,7 +330,7 @@ html, body, .container {
 				<div class="modal-header src-modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
-						파이썬 소스코드 from <span class="label label-success">문민식</span>
+						파이썬 소스코드 from <span id="src-modal-name" class="label label-success">문민식</span>
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -355,8 +345,8 @@ html, body, .container {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button id="run" type="button" class="btn btn-primary python-btn">RUN</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button id="run" type="button" class="btn btn-primary python-btn">실행</button>
+					<button id="src-remove-btn" type="button" class="btn btn-danger python-btn" target-pk="" data-dismiss="modal">삭제</button>
 				</div>
 			</div>
 

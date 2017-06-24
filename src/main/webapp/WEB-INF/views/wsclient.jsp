@@ -46,13 +46,6 @@
 			}
 		});
 
-		//탭닫기 & 브라우저 닫기 시 로그아웃 테스트
-		/* $(window).on("beforeunload", function() {
-			var roomKey = $("#roomKey").val();
-			$.get("exit/" + roomKey, {}, function(data) {
-				alert("close 보내기 성공");
-			});
-		}) */
 		var roomKey = $("#roomKey").val();
 		var webSocket = new WebSocket("ws://localhost:8080/sgpychat/testing/ws");
 		//웹 소켓이 연결되었을 때 호출되는 이벤트
