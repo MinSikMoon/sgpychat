@@ -53,11 +53,6 @@
 			//다시 지워주기
 			$("#response-msg").val('');
 		})
-
-		//엘리먼트 생성 테스트
-		$("#test-btn").click(function() {
-			$("#chat-list").append($(this).attr("value"));
-		})
 		
 		/* 웹소켓 관련 */
 		var webSocket = new WebSocket("ws://localhost:8080/sgpychat/testing/ws");
@@ -113,7 +108,8 @@
 			 addingElem.attr('id',chatElemPk);
 			$("#chat-list").append(addingElem); 
 			idxReset();
-			//$("#chat-list").append("<button class=\"btn btn-primary btn-lg btn-block overflow-hidden src-btn\">"+obj.content+"</button>");
+			chatCntReset();
+			srcCntReset();
 		};
 		
 		
@@ -122,6 +118,12 @@
 			$('.cnt-badge').each(function(index){
 				$(this).text(index);
 			});
+		}
+		chatCntReset = function(){
+			$("#chat-cnt").text($(".chat-btn").length);
+		}
+		srcCntReset = function(){
+			$("#src-cnt").text($(".src-btn").length);
 		}
 		
 		$("#chat-send").click(function() {
@@ -145,6 +147,8 @@
 			var targetId ="#"+$(this).attr("target-pk");
 			$(targetId).remove();
 			idxReset();
+			chatCntReset();
+			srcCntReset();
 		})
 		//웹소켓 종료
 		function disconnect() {
@@ -312,7 +316,7 @@ html, body, .container {
 				<div class="panel-group">
 					<div class="panel panel-default">
 						<div class="panel-body right-text-align">
-							소스 <span class="badge">1</span> 채팅 <span class="badge">2</span>
+							채팅 <span id="chat-cnt" class="badge">0</span> 소스 <span id="src-cnt" class="badge">0</span>
 						</div>
 						
 					</div>
@@ -345,7 +349,7 @@ html, body, .container {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button id="run" type="button" class="btn btn-primary python-btn">실행</button>
+					<button id="run" type="button" class="btn btn-primary">실행</button>
 					<button id="src-remove-btn" type="button" class="btn btn-danger python-btn" target-pk="" data-dismiss="modal">삭제</button>
 				</div>
 			</div>
@@ -379,7 +383,7 @@ html, body, .container {
 						</div>
 						<div class="chat-button-group">
 							<button id="chat-send" type="button"
-								class="btn btn-success chat-btn" data-dismiss="modal" client-id="">
+								class="btn btn-success" data-dismiss="modal" client-id="">
 								<span class="glyphicon glyphicon-send"></span> 전송
 							</button>
 						</div>

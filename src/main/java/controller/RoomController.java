@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import data.maps.WsHostMap;
 import innerObjects.RoomKeyMaker;
@@ -18,7 +19,10 @@ public class RoomController {
 		System.out.println("controller에서 ws장착");
 		this.wsMap = wsMap;
 	}
-		
+	@RequestMapping(value="/", method=RequestMethod.GET)
+	public String welcome(){
+		return "index";
+	}
 
 	//방생성 매핑 : chat master 전용
 	@RequestMapping("/make")

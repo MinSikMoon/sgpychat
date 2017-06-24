@@ -4,6 +4,7 @@
 	xsi:schamaLocation="http://java.sun.com/sml/ns/javaee
     http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
+	
 	<!-- 서블릿을 구현한 springframework 패키지의 클래스들을 쓸 것이다. -->
 	<!-- 1. dispatcher -->
 	<servlet>
