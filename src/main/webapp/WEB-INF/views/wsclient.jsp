@@ -50,7 +50,7 @@
 		var webSocket = new WebSocket("ws://localhost:8080/sgpychat/testing/ws");
 		//웹 소켓이 연결되었을 때 호출되는 이벤트
 		webSocket.onopen = function(message) {
-			$("#received-content").val("교수님과 연결되었습니다.");
+			$("#received-content").val("==>교수님과 연결되었습니다.==\n");
 		};
 		//웹 소켓이 닫혔을 때 호출되는 이벤트
 		webSocket.onclose = function(message) {

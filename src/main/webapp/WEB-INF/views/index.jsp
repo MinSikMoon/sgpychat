@@ -41,12 +41,12 @@ html, body, .container {
 </style>
 
 
-<title>인스턴트 채팅 방만들기 화면입니다.</title>
+<title>수업 방만들기 화면</title>
 </head>
 <body>
 	<div class="container" >
 		<div id = "welcome" class = "text-center jumbotron">
-			<h1>Instant Chat</h1>
+			<h1>서강 파이썬 수업 채팅</h1>
 		</div>
 		<div id = "make_room" class = "text-center">
 			<a href="make"><button type="button" class = "btn btn-warning btn-lg">수업 방만들기</button></a>
