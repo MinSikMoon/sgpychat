@@ -70,9 +70,12 @@
 		};
 		//웹 소켓에서 메시지가 날라왔을 때 호출되는 이벤트
 		webSocket.onmessage = function(message) {
-			$("#received-content").append(
-					"교수님 => "+message+"<br>"		
-				);
+			var obj = JSON.parse(message.data);
+			var time = obj.date;
+			var content = obj.content;
+			var tempContent = $("#received-content").val() + "\n*교수님으로부터 => "
+			+ content + "\n" + time + "==========\n";
+			$("#received-content").val(tempContent);
 		};
 		//Send 버튼을 누르면 실행되는 함수 : 메시지를 json으로 만든다. 
 		$("#chat-send").click(function() {

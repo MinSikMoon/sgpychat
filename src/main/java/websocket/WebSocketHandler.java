@@ -57,21 +57,19 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			String contentType = getMessage(jsonMsg, "content_type");
 			String name = getMessage(jsonMsg, "name");
 			JSONObject obj = new JSONObject();
-			
+			obj.put("content", content);
+			obj.put("date", timeStamp);
 			WebSocketSession destSession = null;
+			
 			if(msgType.equals("client")){
 				destSession = map.getSession(map.getHostId(roomKey));
-				/*if(map.getSession(map.getHostId(roomKey)) == null)
-					System.out.println("destsession이 ㄴㄹ이다.");*/
-				//
-				System.out.println(roomKey + "의 방장은 " + map.getHostId(roomKey));
 				obj.put("clientId", sessionId);
-				obj.put("content", content);
-				obj.put("date", timeStamp);
 				obj.put("contentType", contentType);
 				obj.put("name", name);
 				//System.out.println(jsonMsg);
 			}else{
+				String clientId = getMessage(jsonMsg, "clientId");
+				destSession = map.getSession(clientId);
 				
 			}
 			destSession.sendMessage(new TextMessage(obj.toJSONString()));

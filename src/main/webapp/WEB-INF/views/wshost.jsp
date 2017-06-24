@@ -94,7 +94,7 @@
 				addingElem.on('click', function(){
 					$('#chat-modal-name').text(obj.name);
 					$('#chat-modal-content').text(obj.content);
-					$('#client-id').text(obj.clientId);
+					$('#chat-send').attr("client-id",obj.clientId);
 					$('#chat-remove-btn').attr("target-pk",chatElemPk);
 				});
 				addingElem.attr('id',chatElemPk);
@@ -122,10 +122,16 @@
 		}
 		
 		$("#chat-send").click(function() {
+			//시간 객체
+			var date = new Date();
+			var time = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
+			var sendContent = $("#send-content").val();
+			var cId = $(this).attr("client-id");
 			var msg = {
 				type : "host",
-				content : $("#send-content").val(),
-				date : Date.now()
+				content : sendContent,
+				clientId : cId,
+				date : time
 			};
 			//웹소켓으로 textMessage객체의 값을 보낸다.
 			webSocket.send(JSON.stringify(msg));
@@ -378,14 +384,12 @@ html, body, .container {
 
 
 						<div class="chat-input-group">
-							<input id="client-id" type="hidden"></input>
-							<input id="elem-pk" type="hidden"></input>
-							<textarea id="response-msg" class="form-control" rows="4"
+							<textarea id="send-content" class="form-control" rows="4"
 								placeholder="입력하세요."></textarea>
 						</div>
 						<div class="chat-button-group">
-							<button id="send-btn" type="button"
-								class="btn btn-success chat-btn" data-dismiss="modal">
+							<button id="chat-send" type="button"
+								class="btn btn-success chat-btn" data-dismiss="modal" client-id="">
 								<span class="glyphicon glyphicon-send"></span> 전송
 							</button>
 						</div>
