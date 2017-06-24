@@ -274,8 +274,9 @@ html, body, .container {
 	
 }
 
-.chat-btn {
-	
+#chat-send {
+	min-height: 100%;
+	min-width: 100%;
 }
 
 .src-btn {
